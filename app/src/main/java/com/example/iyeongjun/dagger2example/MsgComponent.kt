@@ -1,6 +1,9 @@
 package com.example.iyeongjun.dagger2example
 
+import android.content.Context
+import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -10,4 +13,13 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(MsgModule::class))
 interface MsgComponent{
     fun makeMsgModle() : MsgModel
+
+    @Component.Builder
+    interface Builder{
+
+        @BindsInstance
+        fun setMyContext(context : Context) : Builder
+
+        fun build() : MsgComponent
+    }
 }
