@@ -1,7 +1,10 @@
 package com.example.iyeongjun.dagger2example
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 /**
@@ -10,7 +13,14 @@ import javax.inject.Singleton
 
 @Module
 class MsgModule {
-    @Singleton
+
     @Provides
-    fun provideMsgModel() : MsgModel = MsgModel("알다가도 모르겠는 대거")
+    @Named("first")
+    @Singleton
+    fun provideMsgModel() : MsgModel = MsgModel("알다가도 모르겠는 가")
+
+    @Provides
+    @Named("second")
+    @Singleton
+    fun provideMsgModelOther() : MsgModel = MsgModel("네임 써본 대거")
 }
