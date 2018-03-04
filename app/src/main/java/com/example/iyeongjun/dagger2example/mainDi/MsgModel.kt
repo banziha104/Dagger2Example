@@ -1,4 +1,4 @@
-package com.example.iyeongjun.dagger2example
+package com.example.iyeongjun.dagger2example.mainDi
 
 import android.content.Context
 

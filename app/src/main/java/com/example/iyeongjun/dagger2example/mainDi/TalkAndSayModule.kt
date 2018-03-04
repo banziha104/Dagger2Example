@@ -1,4 +1,4 @@
-package com.example.iyeongjun.dagger2example
+package com.example.iyeongjun.dagger2example.mainDi
 
 import android.content.Context
 import dagger.Module
@@ -20,5 +20,5 @@ class TalkAndSayModule{
     @Provides
     @Named("secondTalk")
     @Singleton
-    fun provideTalkModel2(@Named("second") msgModel: MsgModel) : SayModel = SayModel(msg = msgModel , str = "이영준")
+    fun provideTalkModel2(@Named("second") msgModel: MsgModel) : SayModel = SayModel(msg = msgModel, str = "이영준")
 }

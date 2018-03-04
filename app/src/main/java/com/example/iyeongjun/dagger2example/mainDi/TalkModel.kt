@@ -1,6 +1,5 @@
-package com.example.iyeongjun.dagger2example
+package com.example.iyeongjun.dagger2example.mainDi
 
-import android.content.Context
 import android.util.Log
 
 /**

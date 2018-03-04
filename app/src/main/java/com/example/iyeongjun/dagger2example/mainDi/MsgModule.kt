@@ -1,10 +1,8 @@
-package com.example.iyeongjun.dagger2example
+package com.example.iyeongjun.dagger2example.mainDi
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 /**
