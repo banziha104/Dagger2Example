@@ -73,12 +73,74 @@ interface AppComponent : AndroidInjector<Dagger2ExampleApp>{
 }
 ```
 
+- MainActivity
+
+```kotlin
+class MainActivity : DaggerAppCompatActivity(){
+
+    @Inject @field:Named("first") lateinit var msgModel : MsgModel // @Inject 어노테이션으로 해당 객체에 주입
+    @Inject @field:Named("second") lateinit var msgModel2 : MsgModel // @Named("second")를 필드에 적용할 때는 @field:Named("second") 사용
+    @Inject lateinit var rx : RxModel
+    var num = 0
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        d("Main","first : ${msgModel.str} ")
+        d("Main","second : ${msgModel2.str} ")
+        d("Main","객체값 ${rx.obj}")
+
+        rx.obj.subscribe{
+            d("Main","메인에서 받은 값 ${it}")
+        }
+
+        btnGoSecond.setOnClickListener{
+            startActivity<SecondActivity>()
+
+        }
+        btnUpScore.setOnClickListener {
+            rx.obj.onNext("${num}")
+            num++
+        }
+    }
+}
+```
+
+# 
 
 
 
 
 ## 스코프와 커스터마이징
 
+> Singleton은 어플리케이션의 생명주기와 함께하지만, 각각 프래그먼트나 액티비티의 생명주기와 맞추거나 서브컴포넌트의 사용을
+>위해서는 커스텀 스코프를 정의해야함
+
+```kotlin
+
+// 커스텀 스코프를 만드는 어노테이션 클래스
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class PerActivity
+
+```
+
+- MsgComponent
+
+```kotlin
+
+@PerActivity    // 커스텀 스코프 적용
+@Subcomponent(modules = arrayOf(MsgModule::class))
+interface MsgComponent{
+
+    @Subcomponent.Builder
+    interface Builder{
+
+        fun build() : MsgComponent
+    }
+}
+
+```
 
 <br> 
 
@@ -97,3 +159,100 @@ interface AppComponent : AndroidInjector<Dagger2ExampleApp>{
 > 컴포넌트 내에서 즉각적인 인스턴스를 공급하거나 생성자의 arguments로 들어가는 메소드를 지정함
 
 
+```kotlin
+@Singleton
+@Component(modules = arrayOf(ActivityBinder::class,AndroidSupportInjectionModule::class,AppModule::class,MsgSubMoudle::class,IntSubModule::class,RxModule::class))
+interface AppComponent : AndroidInjector<Dagger2ExampleApp>{
+
+    @Component.Builder // 컴포넌트의 빌더를 커스터마이징 할수 있도록함
+    interface Builder{
+
+        @BindsInstance
+        fun setMyContext(context : Context) : Builder // context와 같이 즉각적으로 받아와야하는 객체는 @BindsInstance를 이용해 가져옮
+
+        fun build() : AppComponent // 반드시 자신을 리턴하는 build() 메서드를 포함해야함
+    }
+}
+```
+
+## 안드로이드의 인젝션
+
+>  액티비티와 프래그먼트와 같이 안드로이드OS상에서 운용되는 정보는 상기 방법으로 가져오기에 제한됌. 그럼으로 서포트 라이브러리를 이용
+
+
+- ActivityBinder
+
+```kotlin
+
+@Module
+abstract class ActivityBinder{
+    @PerActivity
+    @ContributesAndroidInjector(modules = arrayOf(MsgModule::class)) // 액티비티에 바인딩하는 경우에는 @ContributesAndroidInjector를 사용함
+    abstract fun bindMainActivity() : MainActivity
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = arrayOf(IntModule::class))
+    abstract fun bindSecondActivity() : SecondActivity
+}
+```
+
+- AppComponent
+
+```kotlin
+@Singleton
+@Component(modules = arrayOf(ActivityBinder::class,AndroidSupportInjectionModule::class,AppModule::class,MsgSubMoudle::class,IntSubModule::class,RxModule::class))
+interface AppComponent : AndroidInjector<Dagger2ExampleApp>{ // AndroidInjector<>를 통해 Activity에 의존성 주입이 가능함
+
+    @Component.Builder
+    interface Builder{
+
+        @BindsInstance
+        fun setMyContext(context : Context) : Builder
+
+        fun build() : AppComponent
+    }
+}
+```
+
+- Dagger2ExampleApp
+
+```kotlin
+class Dagger2ExampleApp : DaggerApplication(){ // DaggerApplication을 상속함
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> { // 이때 applicationInjector를 구현해줌
+        return DaggerAppComponent.builder().setMyContext(this).build()
+    }
+}
+```
+
+- MainActivity
+
+```kotlin
+class MainActivity : DaggerAppCompatActivity(){ // DaggerAppCompatActivity 를 상속함으로써 각 액티비티에 적용가능
+
+    @Inject @field:Named("first") lateinit var msgModel : MsgModel
+    @Inject @field:Named("second") lateinit var msgModel2 : MsgModel
+    @Inject lateinit var rx : RxModel
+    var num = 0
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        d("Main","first : ${msgModel.str} ")
+        d("Main","second : ${msgModel2.str} ")
+        d("Main","객체값 ${rx.obj}")
+
+        rx.obj.subscribe{
+            d("Main","메인에서 받은 값 ${it}")
+        }
+
+        btnGoSecond.setOnClickListener{
+            startActivity<SecondActivity>()
+
+        }
+        btnUpScore.setOnClickListener {
+            rx.obj.onNext("${num}")
+            num++
+        }
+    }
+}
+```

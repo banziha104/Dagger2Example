@@ -12,6 +12,4 @@ class Dagger2ExampleApp : DaggerApplication(){
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return DaggerAppComponent.builder().setMyContext(this).build()
     }
-
-
 }
