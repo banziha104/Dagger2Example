@@ -23,4 +23,15 @@
         android:layout_toRightOf="@+id/textView"
         android:text="Button" />
 
+    <Button
+        android:id="@+id/btnUpScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnGoSecond"
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
+        android:layout_toEndOf="@+id/btnGoSecond"
+        android:layout_toRightOf="@+id/btnGoSecond"
+        android:text="UpScore" />
+
 </RelativeLayout>

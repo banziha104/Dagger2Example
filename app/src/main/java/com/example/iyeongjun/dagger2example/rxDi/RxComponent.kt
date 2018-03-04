@@ -1,14 +1,14 @@
 package com.example.iyeongjun.dagger2example.rxDi
 
-import com.example.iyeongjun.dagger2example.di.PerActivity
 import dagger.Subcomponent
+import javax.inject.Singleton
 
 
 /**
  * Created by iyeongjun on 2018. 3. 4..
  */
 
-@PerActivity
+@Singleton
 @Subcomponent
 interface RxComponent{
 

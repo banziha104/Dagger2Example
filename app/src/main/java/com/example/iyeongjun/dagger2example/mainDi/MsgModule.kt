@@ -15,10 +15,10 @@ class MsgModule {
     @Provides
     @Named("first")
     @PerActivity
-    fun provideMsgModel() : MsgModel = MsgModel("알다가도 모르겠는 가")
+    fun provideMsgModel() : MsgModel = MsgModel("이게 첫번쨰")
 
     @Provides
     @Named("second")
     @PerActivity
-    fun provideMsgModelOther() : MsgModel = MsgModel("네임 써본 대거")
+    fun provideMsgModelOther() : MsgModel = MsgModel("이건 두번째")
 }

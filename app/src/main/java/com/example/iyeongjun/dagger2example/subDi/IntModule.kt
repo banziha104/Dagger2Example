@@ -11,9 +11,7 @@ import dagger.Provides
 
 @Module
 class IntModule{
-
     @Provides
     @PerActivity
     fun provideIntModel() = IntModel(19920816)
-
 }

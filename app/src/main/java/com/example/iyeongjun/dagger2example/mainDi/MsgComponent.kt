@@ -1,9 +1,7 @@
 package com.example.iyeongjun.dagger2example.mainDi
 
-import com.example.iyeongjun.dagger2example.Dagger2ExampleApp
 import com.example.iyeongjun.dagger2example.di.PerActivity
 import dagger.Subcomponent
-import dagger.android.AndroidInjector
 
 /**
  * Created by iyeongjun on 2018. 3. 1..
@@ -11,7 +9,7 @@ import dagger.android.AndroidInjector
 
 @PerActivity
 @Subcomponent(modules = arrayOf(MsgModule::class))
-interface MsgComponent : AndroidInjector<Dagger2ExampleApp>{
+interface MsgComponent{
 
     @Subcomponent.Builder
     interface Builder{

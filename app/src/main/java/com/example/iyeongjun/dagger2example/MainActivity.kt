@@ -1,16 +1,11 @@
 package com.example.iyeongjun.dagger2example
 
 import android.os.Bundle
-import android.util.Log
 import android.util.Log.d
-import android.util.Log.v
 import com.example.iyeongjun.dagger2example.mainDi.MsgModel
-import com.example.iyeongjun.dagger2example.subDi.IntModel
-import com.example.iyeongjun.dagger2example.subDi.IntModule
+import com.example.iyeongjun.dagger2example.rxDi.RxModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.custom.ankoView
-import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,19 +17,27 @@ class MainActivity : DaggerAppCompatActivity(){
 
     @Inject @field:Named("first") lateinit var msgModel : MsgModel
     @Inject @field:Named("second") lateinit var msgModel2 : MsgModel
-    @Inject lateinit var intModel: IntModel
+    @Inject lateinit var rx : RxModel
+    var num = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        d("Main","${msgModel.str} 이 호출이 되더냐")
-        d("Main","${msgModel2.str} 자아아아알 되더냐")
-        d("Main","${intModel.num} 은 십")
+        d("Main","first : ${msgModel.str} ")
+        d("Main","second : ${msgModel2.str} ")
+        d("Main","객체값 ${rx.obj}")
 
-        intModel.num = 30
+        rx.obj.subscribe{
+            d("Main","메인에서 받은 값 ${it}")
+        }
 
         btnGoSecond.setOnClickListener{
             startActivity<SecondActivity>()
+
+        }
+        btnUpScore.setOnClickListener {
+            rx.obj.onNext("${num}")
+            num++
         }
     }
 }
