@@ -7,4 +7,4 @@ import dagger.Module
  */
 
 @Module(subcomponents = arrayOf(IntComponent::class))
-class ToMainComponetModule
+class IntSubModule

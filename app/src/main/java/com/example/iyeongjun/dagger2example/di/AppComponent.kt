@@ -2,7 +2,9 @@ package com.example.iyeongjun.dagger2example.di
 
 import android.content.Context
 import com.example.iyeongjun.dagger2example.Dagger2ExampleApp
-import com.example.iyeongjun.dagger2example.subDi.ToMainComponetModule
+import com.example.iyeongjun.dagger2example.mainDi.MsgSubMoudle
+import com.example.iyeongjun.dagger2example.rxDi.RxSubModule
+import com.example.iyeongjun.dagger2example.subDi.IntSubModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -12,7 +14,7 @@ import dagger.android.support.AndroidSupportInjectionModule
  * Created by iyeongjun on 2018. 3. 4..
  */
 
-@Component(modules = arrayOf(ToMainComponetModule::class,ActivityBinder::class, AndroidSupportInjectionModule::class,AppModule::class))
+@Component(modules = arrayOf(ActivityBinder::class, AndroidSupportInjectionModule::class,AppModule::class,RxSubModule::class,MsgSubMoudle::class,IntSubModule::class))
 interface AppComponent : AndroidInjector<Dagger2ExampleApp>{
 
     @Component.Builder
