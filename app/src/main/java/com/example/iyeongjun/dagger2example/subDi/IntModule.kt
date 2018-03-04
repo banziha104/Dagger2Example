@@ -1,9 +1,8 @@
 package com.example.iyeongjun.dagger2example.subDi
 
-import android.content.Context
+import com.example.iyeongjun.dagger2example.di.PerActivity
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 
 /**
@@ -11,11 +10,10 @@ import javax.inject.Singleton
  */
 
 @Module
-@Singleton
 class IntModule{
 
     @Provides
-    @Singleton
+    @PerActivity
     fun provideIntModel() = IntModel(19920816)
 
 }
